@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cinematic LUTs & Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@1,500;1,600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                        serif: ['Cormorant Garamond', 'serif'],
+                    },
+                    colors: {
+                        brand: {
+                            gold: '#D4AF37',
+                            cyan: '#00bcd4',
+                            dark: '#0f0f0f',
+                            gray: '#1a1a1a'
+                        }
+                    },
+                    backgroundImage: {
+                        // New Cinematic Background: Moody, epic horizon/clouds
+                        'hero-pattern': "url('https://images.unsplash.com/photo-1500375592092-40eb2168fd21?q=80&w=2574&auto=format&fit=crop')",
+                    },
+                    animation: {
+                        'cinematic': 'cinematic 30s ease-in-out infinite alternate',
+                    },
+                    keyframes: {
+                        cinematic: {
+                            '0%': { transform: 'scale(1.05)' },
+                            '100%': { transform: 'scale(1.25)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { 
+            background-color: #0f0f0f; 
+            color: #e5e5e5;
+        }
+        
+        /* Smooth Reveal Animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s cubic-bezier(0.5, 0, 0, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f0f0f; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00bcd4;
+        }
+
+        /* Glass effect for nav */
+        .glass-nav {
+            background: rgba(15, 15, 15, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        /* Image Hover Zoom */
+        .img-zoom-container {
+            overflow: hidden;
+        }
+        .img-zoom {
+            transition: transform 0.7s ease;
+        }
+        .img-zoom-container:hover .img-zoom {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-brand-cyan selection:text-black">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-6 py-6 flex justify-between items-center">
+            <!-- Left: Socials -->
+            <div class="hidden md:flex space-x-6 text-sm tracking-widest text-gray-400">
+                <a href="#" class="hover:text-brand-cyan transition-colors"><i class="fab fa-instagram text-lg"></i></a>
+                <a href="#" class="hover:text-brand-cyan transition-colors"><i class="fab fa-youtube text-lg"></i></a>
+            </div>
+
+            <!-- Center: Brand -->
+            <div class="text-center absolute left-1/2 transform -translate-x-1/2">
+                <a href="#" class="text-2xl md:text-3xl font-serif italic font-medium tracking-wider text-white hover:text-brand-cyan transition-colors duration-300">
+                    Rylan.uv
+                </a>
+            </div>
+
+            <!-- Right: Shop/Cart -->
+            <div class="flex items-center space-x-8">
+                <a href="#shop" class="text-xs uppercase tracking-[0.2em] font-medium text-gray-300 hover:text-white hover:border-b border-white transition-all pb-1 hidden md:block">Shop Luts</a>
+                <button class="text-white hover:text-brand-cyan transition-colors relative">
+                    <i class="fas fa-shopping-bag text-lg"></i>
+                    <span class="absolute -top-1 -right-2 bg-brand-cyan text-black text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">0</span>
+                </button>
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden text-white" id="mobile-menu-btn">
+                    <i class="fas fa-bars text-lg"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Mobile Menu Overlay -->
+        <div id="mobile-menu" class="fixed inset-0 bg-black z-40 hidden flex flex-col items-center justify-center space-y-8 opacity-0 transition-opacity duration-300">
+            <button id="close-menu" class="absolute top-6 right-6 text-white text-2xl"><i class="fas fa-times"></i></button>
+            <a href="#work" class="text-3xl font-serif italic text-white hover:text-brand-cyan">Work</a>
+            <a href="#shop" class="text-3xl font-serif italic text-white hover:text-brand-cyan">Shop</a>
+            <a href="#about" class="text-3xl font-serif italic text-white hover:text-brand-cyan">About</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative h-screen w-full overflow-hidden flex items-center justify-center">
+        <!-- Background Image with Cinematic Zoom -->
+        <div class="absolute inset-0 bg-hero-pattern bg-cover bg-center bg-no-repeat animate-cinematic"></div>
+        
+        <!-- Overlays -->
+        <div class="absolute inset-0 bg-gradient-to-b from-cyan-900/30 via-transparent to-[#0f0f0f]"></div>
+        <div class="absolute inset-0 bg-black/40"></div>
+        
+        <div class="relative z-10 text-center px-4 max-w-5xl mx-auto mt-20">
+            <p class="text-brand-cyan tracking-[0.3em] text-xs md:text-sm uppercase mb-4 reveal">Professional Color Grading</p>
+            <h1 class="text-5xl md:text-7xl lg:text-8xl font-serif text-white mb-8 leading-tight reveal delay-100 drop-shadow-2xl">
+                Redefine Your <br/><span class="italic text-cyan-50 opacity-90">Visual Reality</span>
+            </h1>
+            <p class="text-gray-300 text-sm md:text-base max-w-xl mx-auto leading-loose tracking-wide mb-10 reveal delay-200">
+                Crafted for those who see the world differently. Elevate your footage with cinematic depth and atmospheric precision.
+            </p>
+            <div class="reveal delay-300">
+                <a href="#shop" class="inline-block border border-cyan-500/50 text-white px-10 py-4 text-xs tracking-[0.2em] uppercase hover:bg-brand-cyan hover:text-black hover:border-brand-cyan transition-all duration-500 shadow-[0_0_20px_rgba(0,188,212,0.2)]">
+                    Explore The Shop
+                </a>
+            </div>
+        </div>
+        
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 text-white/50 text-xs tracking-widest animate-bounce">
+            SCROLL
+        </div>
+    </header>
+
+    <!-- Featured Work / Reel Section (RESTORED) -->
+    <section id="work" class="py-24 bg-brand-dark relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-16 reveal">
+                <div>
+                    <h2 class="text-3xl md:text-4xl font-serif text-white mb-2">Selected Works</h2>
+                    <div class="h-0.5 w-12 bg-brand-cyan"></div>
+                </div>
+                <p class="text-gray-500 text-sm mt-4 md:mt-0 tracking-wide">Color graded with my Master Collection</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Project 1 -->
+                <div class="group cursor-pointer reveal delay-100">
+                    <div class="img-zoom-container overflow-hidden rounded-sm relative aspect-[16/9]">
+                        <img src="https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?q=80&w=2670&auto=format&fit=crop" alt="City Architecture" class="w-full h-full object-cover img-zoom opacity-80 group-hover:opacity-100 transition-opacity">
+                        <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
+                    </div>
+                    <div class="mt-4 flex justify-between items-center">
+                        <h3 class="text-white text-lg font-medium">Neon District</h3>
+                        <span class="text-xs text-gray-500 uppercase tracking-widest">Sony A7SIII</span>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="group cursor-pointer reveal delay-200">
+                    <div class="img-zoom-container overflow-hidden rounded-sm relative aspect-[16/9]">
+                        <img src="https://images.unsplash.com/photo-1472214103451-9374bd1c798e?q=80&w=2574&auto=format&fit=crop" alt="Nature Landscape" class="w-full h-full object-cover img-zoom opacity-80 group-hover:opacity-100 transition-opacity">
+                        <div class="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
+                    </div>
+                    <div class="mt-4 flex justify-between items-center">
+                        <h3 class="text-white text-lg font-medium">Silent Peaks</h3>
+                        <span class="text-xs text-gray-500 uppercase tracking-widest">Blackmagic 6K</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- SHOP SECTION -->
+    <section id="shop" class="py-32 bg-[#141414]">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-20 reveal">
+                <span class="text-brand-cyan text-xs tracking-[0.3em] uppercase block mb-4">The Collection</span>
+                <h2 class="text-4xl md:text-5xl font-serif italic text-white">Editing Assets</h2>
+                <p class="text-gray-500 mt-4 max-w-md mx-auto text-sm leading-relaxed">Transform your footage instantly with my personally crafted LUTs and presets used in my daily workflow.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-x-8 gap-y-16">
+                
+                <!-- Product 1: City Lights -->
+                <div class="group reveal delay-100">
+                    <div class="relative overflow-hidden aspect-[4/5] mb-6">
+                        <div class="absolute top-4 left-4 z-10 bg-white text-black text-[10px] font-bold px-2 py-1 uppercase tracking-wider">Best Seller</div>
+                        
+                        <img src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?q=80&w=2572&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Cinematic Teal & Orange">
+                        
+                        <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center flex-col p-6 text-center">
+                            <p class="text-gray-300 text-sm mb-6 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">Perfect for cityscapes and night photography. Includes 5 distinct looks.</p>
+                            <button class="bg-white text-black px-8 py-3 text-xs tracking-widest uppercase hover:bg-brand-cyan hover:text-white transition-colors transform translate-y-4 group-hover:translate-y-0 duration-500 delay-75">
+                                Add to Cart - $29
+                            </button>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <h3 class="text-xl text-white font-serif italic mb-1">Urban Cinematic Pack</h3>
+                        <p class="text-gray-500 text-xs uppercase tracking-widest">10 LUTs • .CUBE Format</p>
+                        <p class="text-white mt-2 font-medium">$29.00</p>
+                    </div>
+                </div>
+
+                <!-- Product 2: Moody Forest -->
+                <div class="group reveal delay-200">
+                    <div class="relative overflow-hidden aspect-[4/5] mb-6">
+                         <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?q=80&w=2560&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Moody Nature">
+                        
+                        <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center flex-col p-6 text-center">
+                            <p class="text-gray-300 text-sm mb-6 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">Deep greens and desaturated tones for a moody aesthetic.</p>
+                            <button class="bg-white text-black px-8 py-3 text-xs tracking-widest uppercase hover:bg-brand-cyan hover:text-white transition-colors transform translate-y-4 group-hover:translate-y-0 duration-500 delay-75">
+                                Add to Cart - $24
+                            </button>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <h3 class="text-xl text-white font-serif italic mb-1">Moody Nature Collection</h3>
+                        <p class="text-gray-500 text-xs uppercase tracking-widest">8 LUTs • .CUBE Format</p>
+                        <p class="text-white mt-2 font-medium">$24.00</p>
+                    </div>
+                </div>
+
+                <!-- Product 3: Vintage Object -->
+                <div class="group reveal delay-300">
+                    <div class="relative overflow-hidden aspect-[4/5] mb-6">
+                        <img src="https://images.unsplash.com/photo-1597843784744-e3f9408d672a?q=80&w=2535&auto=format&fit=crop" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Vintage Film">
+                        
+                        <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center flex-col p-6 text-center">
+                            <p class="text-gray-300 text-sm mb-6 translate-y-4 group-hover:translate-y-0 transition-transform duration-500">Rich, warm tones mimicking classic film stock.</p>
+                            <button class="bg-white text-black px-8 py-3 text-xs tracking-widest uppercase hover:bg-brand-cyan hover:text-white transition-colors transform translate-y-4 group-hover:translate-y-0 duration-500 delay-75">
+                                Add to Cart - $35
+                            </button>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <h3 class="text-xl text-white font-serif italic mb-1">Vintage Film Emulation</h3>
+                        <p class="text-gray-500 text-xs uppercase tracking-widest">15 LUTs • Warm Tones</p>
+                        <p class="text-white mt-2 font-medium">$35.00</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter / Footer -->
+    <footer class="bg-black text-white py-20 border-t border-gray-900">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <h2 class="text-2xl font-serif italic mb-6">Join the Community</h2>
+            <p class="text-gray-500 text-sm mb-8">Get free editing tips, exclusive discounts, and early access to new drops.</p>
+            
+            <form class="flex flex-col md:flex-row gap-4 justify-center max-w-md mx-auto mb-16">
+                <input type="email" placeholder="YOUR EMAIL ADDRESS" class="bg-transparent border-b border-gray-700 py-3 px-4 focus:outline-none focus:border-white text-sm w-full md:w-64 placeholder-gray-600 transition-colors">
+                <button class="text-xs tracking-[0.2em] uppercase hover:text-brand-cyan transition-colors py-3 px-4 border border-transparent hover:border-brand-cyan">Subscribe</button>
+            </form>
+
+            <div class="flex flex-col items-center gap-6">
+                <a href="#" class="text-2xl font-serif italic">Rylan.uv</a>
+                <div class="flex gap-6 text-gray-500 text-sm">
+                    <a href="#" class="hover:text-white transition-colors"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="hover:text-white transition-colors"><i class="fab fa-youtube"></i></a>
+                    <a href="#" class="hover:text-white transition-colors"><i class="fas fa-envelope"></i></a>
+                </div>
+                <p class="text-xs text-gray-700 mt-8 tracking-wider">© 2024 Rylan.uv. ALL RIGHTS RESERVED.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                nav.classList.add('glass-nav', 'py-4');
+                nav.classList.remove('py-6');
+            } else {
+                nav.classList.remove('glass-nav', 'py-4');
+                nav.classList.add('py-6');
+            }
+        });
+
+        // Mobile menu toggle
+        const btn = document.getElementById('mobile-menu-btn');
+        const menu = document.getElementById('mobile-menu');
+        const closeBtn = document.getElementById('close-menu');
+        const menuLinks = menu.querySelectorAll('a');
+
+        function toggleMenu() {
+            const isHidden = menu.classList.contains('hidden');
+            if (isHidden) {
+                menu.classList.remove('hidden');
+                setTimeout(() => menu.classList.remove('opacity-0'), 10);
+            } else {
+                menu.classList.add('opacity-0');
+                setTimeout(() => menu.classList.add('hidden'), 300);
+            }
+        }
+
+        btn.addEventListener('click', toggleMenu);
+        closeBtn.addEventListener('click', toggleMenu);
+        menuLinks.forEach(link => link.addEventListener('click', toggleMenu));
+
+        // Scroll Animation Observer
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: "0px"
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    </script>
+</body>
+</html>
