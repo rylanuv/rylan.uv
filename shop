@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Shop</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <nav>
+        <a href="index.html">Home</a> | 
+        <a href="shop.html">Shop</a>
+    </nav>
+
+    <h1>Welcome to the Shop</h1>
+    <p>Here are my products.</p>
+
+    <div class="product">
+        <h3>Product 1</h3>
+        <button>Buy Now</button>
+    </div>
+
+</body>
+</html>
